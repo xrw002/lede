@@ -66,8 +66,7 @@ jobs:
           
       - name: Generate configuration file
         run: |
-          rm -f ./.config*
-          touch ./.config
+          make defconfig
           
           #
           # ========================固件定制部分========================
@@ -163,15 +162,16 @@ jobs:
             CONFIG_PACKAGE_luci-app-webadmin=y
             CONFIG_PACKAGE_luci-app-wireguard=y
             CONFIG_PACKAGE_luci-app-wrtbwmon=y
-            CONFIG_PACKAGE_luci-luci-theme-atmaterial=y
             CONFIG_PACKAGE_luci-luci-app-koolproxyR=y
-            CONFIG_PACKAGE_luci-luci-theme-rosy=y            
+          
             EOF
             
           # LuCI主题:
             cat >> .config <<EOF
             CONFIG_PACKAGE_luci-theme-argon=y
             CONFIG_PACKAGE_luci-theme-netgear=y
+            CONFIG_PACKAGE_luci-luci-theme-atmaterial=y
+            CONFIG_PACKAGE_luci-luci-theme-rosy=y  
             EOF
             
           # 常用软件包:
