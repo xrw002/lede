@@ -7,14 +7,14 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 #
 
-name: OpenWrt-编译x64固件
+name: OpenWrt-CI
 
 on:
-  schedule:
-     - cron: 0 20 * * *
   push:
     branches: 
       - master
+    schedule:
+      - cron: 0 20 * * *
   # release:
   #   types: [published]
 
@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout
         uses: actions/checkout@master
         with:
@@ -48,24 +49,16 @@ jobs:
           # ln -s /mnt/openwrt/dl ./dl
           # ln -s /mnt/openwrt/feeds ./feeds
           # ln -s /mnt/openwrt/staging_dir ./staging_dir
-          
-      - name: 自定义插件主题。
-        run: |
-          cd package
-          mkdir openwrt-packages
-          cd openwrt-packages
-          git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git
-          git clone https://github.com/brokeld/luci-app-koolproxyR.git
-          git clone https://github.com/rosywrt/luci-theme-rosy.git
-                 
+          df -h
       - name: Update feeds
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          
       - name: Generate configuration file
+        run: make defconfig
         run: |
-          make defconfig
+          rm -f ./.config*
+          touch ./.config
           
           #
           # ========================固件定制部分========================
